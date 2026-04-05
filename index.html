@@ -344,12 +344,36 @@ const songs=[
 let ci=0,pl=false,yp=null,yr=false;
 function ip(){ci=Math.floor(Math.random()*songs.length);ls(ci);const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);}
 window.onYouTubeIframeAPIReady=function(){yr=true;mkp(songs[ci].yt);}
-function mkp(id){if(yp)yp.destroy();let d=document.getElementById('yfd');if(!d){d=document.createElement('div');d.id='yfd';d.style.cssText='position:fixed;bottom:62px;right:0;width:1px;height:1px;overflow:hidden';document.body.appendChild(d);}yp=new YT.Player('yfd',{width:'1',height:'1',videoId:id,playerVars:{autoplay:1,controls:0},events:{onReady:e=>{e.target.playVideo();pl=true;ub();},onStateChange:e=>{if(e.data===0)ns();}}});}
+function mkp(id){if(yp)yp.destroy();let d=document.getElementById('yfd');if(!d){d=document.createElement('div');d.id='yfd';d.style.cssText='position:fixed;bottom:62px;right:0;width:1px;height:1px;overflow:hidden';document.body.appendChild(d);}yp=new YT.Player('yfd',{
+  width:'1',
+  height:'1',
+  videoId:id,
+  playerVars:{autoplay:1,controls:0, mute:0},
+  events:{
+    onReady:e=>{
+      e.target.unMute();        // 🔊 SOUND ON
+      e.target.setVolume(100);  // 🔊 FULL VOLUME
+      e.target.playVideo();
+      pl=true;
+      ub();
+    },
+    onStateChange:e=>{
+      if(e.data===0)ns();
+    }
+  }
+});
 function ls(i){const s=songs[i];document.getElementById('ptt').textContent=s.t;document.getElementById('par').textContent=s.a;document.getElementById('pth').src=`https://img.youtube.com/vi/${s.yt}/default.jpg`;document.getElementById('ytl').href=`https://www.youtube.com/watch?v=${s.yt}`;if(yr)mkp(s.yt);}
 function ns(){ci=(ci+1)%songs.length;ls(ci);}
 function ps(){ci=(ci-1+songs.length)%songs.length;ls(ci);}
 function tp(){if(!yp)return;pl?yp.pauseVideo():yp.playVideo();pl=!pl;ub();}
 function ub(){document.getElementById('pb').textContent=pl?'⏸':'▶';}
+                 document.body.addEventListener('click', function () {
+  if (yp) {
+    yp.unMute();
+    yp.setVolume(100);
+    yp.playVideo();
+  }
+}, { once: true });
 </script>
 
 <script>
